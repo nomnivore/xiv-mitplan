@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
+import { AppNav } from "@/components/app-nav";
 
 export const metadata: Metadata = {
   title: "xiv mitplan",
@@ -24,14 +25,15 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <header className="px-4 py-2 flex justify-between align-middle">
-            <nav>
-              <Link href="/" className="text-3xl">
+            <nav className="flex gap-4">
+              <Link href="/" className="text-2xl">
                 xiv mitplan
               </Link>
+              <AppNav />
             </nav>
             <ThemeToggle />
           </header>
-          {children}
+          <main className="px-4">{children}</main>
         </ThemeProvider>
       </body>
     </html>
