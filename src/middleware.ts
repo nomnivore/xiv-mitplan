@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
+  // extend session cookie expirations
   if (request.method === "GET") {
     const response = NextResponse.next();
     const token = request.cookies.get("session")?.value ?? null;
@@ -20,6 +21,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return response;
   }
 
+  // CSRF protection
   const originHeader = request.headers.get("Origin");
   // NOTE: You may need to use `X-Forwarded-Host` instead
   const hostHeader = request.headers.get("Host");
