@@ -1,4 +1,6 @@
+import { setSessionTokenCookie } from "@/lib/cookies";
 import { discord } from "@/lib/oauth";
+import { createSession, generateSessionToken } from "@/server/session";
 import { getUserFromDiscordId } from "@/server/user";
 import { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
@@ -43,6 +45,13 @@ export async function GET(request: Request): Promise<Response> {
 
   if (existingUser !== null) {
     // TODO: create lucia-style session and cookie api
-    // const sessionToken = generateSessionToken()
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, discordUserId);
+    setSessionTokenCookie(sessionToken, session.expiresAt);
+
+    return new Response(null, {
+      status: 302,
+      headers: { Location: "/" },
+    });
   }
 }
