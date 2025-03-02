@@ -1,7 +1,7 @@
 import { setSessionTokenCookie } from "@/lib/cookies";
 import { discord } from "@/lib/oauth";
-import { createSession, generateSessionToken } from "@/server/session";
-import { getUserFromDiscordId } from "@/server/user";
+import { createSession, generateSessionToken } from "@/lib/session";
+import { getUserFromDiscordId } from "@/lib/user";
 import { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 
