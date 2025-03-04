@@ -9,6 +9,8 @@ export const userTable = sqliteTable("users", {
   // in future, we can separate oauth providers to a separate database table/entry
   discordId: text("discord_id").notNull().unique(),
   // TODO: should be text or int?
+
+  discordAvatar: text("discord_avatar"), // hash of the user's avatar, if exists
 });
 
 export const sessionTable = sqliteTable("sessions", {

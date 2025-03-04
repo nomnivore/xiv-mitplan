@@ -7,6 +7,8 @@ import { getUserFromDiscordId } from "@/lib/user";
 import { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 
+// TODO: redirecting from this route still does not work
+
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
@@ -39,6 +41,7 @@ export async function GET(request: Request): Promise<Response> {
   const discordUser = await discordUserResponse.json();
   const discordUserId: string = discordUser.id;
   const discordUsername: string = discordUser.username; // will be display name if new account
+  const discordAvatar: string = discordUser.avatar;
   const discordUserEmail: string | null = discordUser.verified
     ? discordUser.email
     : null; // only use verified emails
@@ -46,7 +49,7 @@ export async function GET(request: Request): Promise<Response> {
   const existingUser = await getUserFromDiscordId(discordUserId);
 
   if (existingUser !== null) {
-    // TODO: create lucia-style session and cookie api
+    // TODO: update existing DB entry with fresh data (avatar, email?)
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, existingUser.id);
     setSessionTokenCookie(sessionToken, session.expiresAt);
@@ -66,6 +69,7 @@ export async function GET(request: Request): Promise<Response> {
       discordId: discordUserId,
       name: discordUsername,
       email: discordUserEmail ?? `temp-${discordUserId}@temp.com`, // FIXME:
+      discordAvatar,
     })
     .returning();
 
