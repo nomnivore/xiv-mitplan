@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "@radix-ui/react-navigation-menu";
+import Link from "next/link";
 
 export default async function Login() {
   return (
