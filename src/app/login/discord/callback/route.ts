@@ -1,4 +1,6 @@
 import { setSessionTokenCookie } from "@/lib/cookies";
+import { db } from "@/lib/db";
+import { User, userTable } from "@/lib/db/schema";
 import { discord } from "@/lib/oauth";
 import { createSession, generateSessionToken } from "@/lib/session";
 import { getUserFromDiscordId } from "@/lib/user";
@@ -13,11 +15,11 @@ export async function GET(request: Request): Promise<Response> {
     (await cookies()).get("discord_oauth_state")?.value ?? null;
 
   if (code === null || state === null || storedState === null) {
-    return new Response(null, { status: 400 });
+    return new Response("Redirecting...", { status: 400 });
   }
 
   if (state !== storedState) {
-    return new Response(null, { status: 400 });
+    return new Response("Redirecting...", { status: 400 });
   }
 
   let tokens: OAuth2Tokens;
@@ -25,7 +27,7 @@ export async function GET(request: Request): Promise<Response> {
     tokens = await discord.validateAuthorizationCode(code, null);
   } catch (e) {
     // invalid code or credentials
-    return new Response(null, { status: 400 });
+    return new Response("Redirecting...", { status: 400 });
   }
 
   const discordUserResponse = await fetch("https://discord.com/api/users/@me", {
@@ -46,12 +48,44 @@ export async function GET(request: Request): Promise<Response> {
   if (existingUser !== null) {
     // TODO: create lucia-style session and cookie api
     const sessionToken = generateSessionToken();
-    const session = await createSession(sessionToken, discordUserId);
+    const session = await createSession(sessionToken, existingUser.id);
     setSessionTokenCookie(sessionToken, session.expiresAt);
 
-    return new Response(null, {
+    return new Response("Redirecting...", {
       status: 302,
       headers: { Location: "/" },
     });
   }
+
+  // create new user in the db
+
+  // TODO: move this to a funciton in lib/user.ts
+  const dbResult = await db
+    .insert(userTable)
+    .values({
+      discordId: discordUserId,
+      name: discordUsername,
+      email: discordUserEmail ?? `temp-${discordUserId}@temp.com`, // FIXME:
+    })
+    .returning();
+
+  if (dbResult.length > 0) {
+    const newUser = dbResult[0];
+
+    const sessionToken = generateSessionToken();
+    const session = await createSession(sessionToken, newUser.id);
+    setSessionTokenCookie(sessionToken, session.expiresAt);
+
+    return new Response("Redirecting...", {
+      status: 201,
+      headers: { Location: "/" },
+    });
+  }
+
+  // if we havent returned yet, something went wrong?
+
+  return new Response("Redirecting...", {
+    status: 418, // i'm a teapot
+    headers: { Location: "/login" },
+  });
 }

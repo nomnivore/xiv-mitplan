@@ -13,7 +13,7 @@ export async function setSessionTokenCookie(token: string, expiresAt: Date) {
   });
 }
 
-export async function deleteSessionTokenCookie(token: string, expiresAt: Date) {
+export async function deleteSessionTokenCookie() {
   const cookieStore = await cookies();
 
   cookieStore.set("session", "", {

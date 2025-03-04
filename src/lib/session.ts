@@ -6,6 +6,8 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import { type User, type Session, sessionTable, userTable } from "./db/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
+import { cache } from "react";
+import { cookies } from "next/headers";
 
 function encodeToken(token: string) {
   return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
@@ -73,3 +75,16 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 export type SessionValidationResult =
   | { session: Session; user: User }
   | { session: null; user: null };
+
+export const getCurrentSession = cache(
+  async (): Promise<SessionValidationResult> => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session")?.value ?? null;
+    if (token === null) {
+      return { session: null, user: null };
+    }
+
+    const result = await validateSessionToken(token);
+    return result;
+  },
+);

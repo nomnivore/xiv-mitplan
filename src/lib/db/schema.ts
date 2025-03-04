@@ -7,7 +7,8 @@ export const userTable = sqliteTable("users", {
   email: text().notNull().unique(),
 
   // in future, we can separate oauth providers to a separate database table/entry
-  discordId: int("discord_id").notNull().unique(),
+  discordId: text("discord_id").notNull().unique(),
+  // TODO: should be text or int?
 });
 
 export const sessionTable = sqliteTable("sessions", {
