@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "fmt": "bun exec prettier . --write",
     "shadcn": "bunx --bun shadcn@latest",
     "db:dev": "turso dev --db-file local.db",
     "db:push": "drizzle-kit push",
@@ -46,6 +47,9 @@
     "drizzle-kit": "^0.30.5",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
+    "eslint-config-prettier": "^10.0.2",
+    "prettier": "3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tsx": "^4.19.3",
     "typescript": "^5"
   }
