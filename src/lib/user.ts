@@ -15,7 +15,6 @@ export async function getUserFromDiscordId(id: string): Promise<User | null> {
 }
 
 export async function getUserFromId(id: number): Promise<User | null> {
-
   const result = await db.select().from(userTable).where(eq(userTable.id, id));
 
   if (result.length === 0) return null;

@@ -24,7 +24,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <header className="px-4 py-2 flex justify-between align-middle">
+          <header className="flex justify-between px-4 py-2 align-middle">
             <nav className="flex gap-4">
               <Link href="/" className="text-2xl">
                 xiv mitplan

@@ -42,7 +42,7 @@ export default function Plan() {
         <h1>FRU Mit but Good</h1>
         <h2>Futures Rewritten (Ultimate)</h2>
         <Textarea placeholder="Type your mit plan's description and any other information here..... TODO: support markdown formatting" />
-        <div className="text-sm ml-auto max-w-fit">
+        <div className="ml-auto max-w-fit text-sm">
           stars: 0 -- last updated: [[timestamp]] -- author: emet-selch
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function Plan() {
           <TableRow>
             <TableHead></TableHead>
             {sample_roles.map((role, key) => (
-              <TableHead key={key} className="align-middle text-center">
+              <TableHead key={key} className="text-center align-middle">
                 {role}
               </TableHead>
             ))}
@@ -62,7 +62,7 @@ export default function Plan() {
           {sample_mechanics.map((mech, key) => (
             <TableRow key={key}>
               <TableCell className="">
-                <div className="flex flex-col min-w-fit text-nowrap py-4">
+                <div className="flex min-w-fit flex-col py-4 text-nowrap">
                   <div>{mech}</div>
                   <small className="text-muted-foreground">00:24</small>
                 </div>
@@ -70,7 +70,7 @@ export default function Plan() {
 
               {sample_roles.map((_, key) => (
                 <TableCell key={key} className="group border-l-1">
-                  <div className="flex gap-1 justify-center flex-wrap">
+                  <div className="flex flex-wrap justify-center gap-1">
                     {/* simulate 2-3 mits per cell */}
                     <Button
                       variant="outline"
@@ -96,7 +96,7 @@ export default function Plan() {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="opacity-0 group-hover:opacity-100 outline-dashed -outline-offset-3 outline-[2px] cursor-pointer"
+                      className="cursor-pointer opacity-0 outline-[2px] -outline-offset-3 outline-dashed group-hover:opacity-100"
                     >
                       <PlusIcon
                         aria-label="add-action"

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fmt": "bun exec prettier . --write",
+    "fmt": "bunx prettier . --write",
     "shadcn": "bunx --bun shadcn@latest",
     "db:dev": "turso dev --db-file local.db",
     "db:push": "drizzle-kit push",
