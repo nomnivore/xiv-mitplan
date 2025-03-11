@@ -1,13 +1,11 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { LoginCard } from "@/components/login-card";
 
 export default async function Login() {
   return (
-    <>
-      <h1>Sign In</h1>
-      <Button variant="default" asChild>
-        <Link href="/login/discord">Sign in with Discord</Link>
-      </Button>
-    </>
+    <div className="flex w-full items-center justify-center p-6 md:p-10">
+      <div className="w-full max-w-sm">
+        <LoginCard />
+      </div>
+    </div>
   );
 }
