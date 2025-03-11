@@ -8,6 +8,8 @@ import { db } from "./db";
 import { eq } from "drizzle-orm";
 import { cache } from "react";
 import { cookies } from "next/headers";
+import { deleteSessionTokenCookie } from "./cookies";
+import { redirect } from "next/navigation";
 
 function encodeToken(token: string) {
   return encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
@@ -88,3 +90,16 @@ export const getCurrentSession = cache(
     return result;
   },
 );
+
+export async function logout(redirectUrl: string | null | false = "/login") {
+  "use server";
+  console.log("action ran");
+  const { session } = await getCurrentSession();
+  if (!session) {
+    return { error: "Unauthorized" };
+  }
+
+  await invalidateSession(session.id);
+  deleteSessionTokenCookie();
+  if (redirectUrl && typeof redirectUrl === "string") redirect(redirectUrl);
+}

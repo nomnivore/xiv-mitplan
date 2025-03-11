@@ -7,8 +7,6 @@ import { getUserFromDiscordId } from "@/lib/user";
 import { OAuth2Tokens } from "arctic";
 import { cookies } from "next/headers";
 
-// TODO: redirecting from this route still does not work
-
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
@@ -54,10 +52,7 @@ export async function GET(request: Request): Promise<Response> {
     const session = await createSession(sessionToken, existingUser.id);
     setSessionTokenCookie(sessionToken, session.expiresAt);
 
-    return new Response("Redirecting...", {
-      status: 302,
-      headers: { Location: "/" },
-    });
+    return Response.redirect(new URL("/", request.url));
   }
 
   // create new user in the db
@@ -80,16 +75,11 @@ export async function GET(request: Request): Promise<Response> {
     const session = await createSession(sessionToken, newUser.id);
     setSessionTokenCookie(sessionToken, session.expiresAt);
 
-    return new Response("Redirecting...", {
-      status: 201,
-      headers: { Location: "/" },
-    });
+    return Response.redirect(new URL("/", request.url));
   }
 
   // if we havent returned yet, something went wrong?
+  // TODO: should log something here
 
-  return new Response("Redirecting...", {
-    status: 418, // i'm a teapot
-    headers: { Location: "/login" },
-  });
+  return Response.redirect(new URL("/", request.url));
 }
