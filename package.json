@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "app:dev": "next dev --turbopack",
+    "dev": "conc --prefix name --prefixColors auto --names db,app -- \"bun run db:dev\" \"bun run app:dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -45,6 +46,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.1.2",
     "drizzle-kit": "^0.30.5",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
