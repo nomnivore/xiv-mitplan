@@ -1,15 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { NotebookTextIcon, PlusIcon } from "lucide-react";
+import { jobData } from "@/lib/jobs";
+import PlanTable from "./plan-table";
+
 
 // sample data
 const sample_mechanics = [
@@ -22,20 +15,11 @@ const sample_mechanics = [
   "Burnished Glory 2",
 ];
 
-const sample_roles = [
-  "WHM",
-  "AST",
-  "SGE",
-  "SCH",
-  "Tank 1",
-  "Tank 2",
-  "Melee 1",
-  "Melee 2",
-  "Phys Range",
-  "Caster",
-];
-
 export default function Plan() {
+  const sample_roles = jobData.roles
+    .filter((role) => role.transient)
+    .map((role) => role.name)
+    .concat(jobData.jobs.map((job) => job.name));
   return (
     <>
       <div>
@@ -47,69 +31,7 @@ export default function Plan() {
         </div>
       </div>
       <Separator className="my-4" />
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead></TableHead>
-            {sample_roles.map((role, key) => (
-              <TableHead key={key} className="text-center align-middle">
-                {role}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sample_mechanics.map((mech, key) => (
-            <TableRow key={key}>
-              <TableCell className="">
-                <div className="flex min-w-fit flex-col py-4 text-nowrap">
-                  <div>{mech}</div>
-                  <small className="text-muted-foreground">00:24</small>
-                </div>
-              </TableCell>
-
-              {sample_roles.map((_, key) => (
-                <TableCell key={key} className="group border-l-1">
-                  <div className="flex flex-wrap justify-center gap-1">
-                    {/* simulate 2-3 mits per cell */}
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="cursor-pointer"
-                    >
-                      <NotebookTextIcon className="aspect-square" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="cursor-pointer"
-                    >
-                      <NotebookTextIcon className="aspect-square" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="cursor-pointer"
-                    >
-                      <NotebookTextIcon className="aspect-square" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="cursor-pointer opacity-0 outline-[2px] -outline-offset-3 outline-dashed group-hover:opacity-100"
-                    >
-                      <PlusIcon
-                        aria-label="add-action"
-                        className="aspect-square"
-                      />
-                    </Button>
-                  </div>
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <PlanTable roles={sample_roles} mechanics={sample_mechanics} />
     </>
   );
 }
