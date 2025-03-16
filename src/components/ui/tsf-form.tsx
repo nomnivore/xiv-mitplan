@@ -36,15 +36,16 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
 
   if (errors.length === 0) return null;
 
-  return (
+  return errors.map((error, index) => (
     <p
       ref={ref}
+      key={index}
       className={cn("text-sm font-medium text-destructive", className)}
       {...props}
     >
-      {errors[0]}
+      {error.message}
     </p>
-  )
+  ))
 })
 FormMessage.displayName = "FormMessage";
 

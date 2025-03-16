@@ -39,7 +39,7 @@ export const AddRolePopover = React.forwardRef<
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <Button
           {...props}
           variant={variant || "ghost"}

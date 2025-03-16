@@ -40,7 +40,7 @@ export default function PlanTable(initialState: {roles: string[], mechanics: str
 
               {roles.map((_, key) => (
                 <TableCell key={key} className="group border-l-1">
-                  <div className="flex flex-wrap justify-center gap-1">
+                  <div className="flex flex-wrap justify-center gap-1 min-w-28 max-w-48">
                     {/* simulate 2-3 mits per cell */}
                     <Button
                       variant="outline"

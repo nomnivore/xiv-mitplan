@@ -17,6 +17,7 @@
 jobs:
   - name: White Mage
     role: Healer
+    code: WHM
     actions:
       - name: Cure
         cooldown: 0
@@ -27,6 +28,7 @@ jobs:
         description: Places a bell that heals for 200 potency every time you take damage
   - name: Astrologian
     role: Healer
+    code: AST
     actions:
       - name: Essential Dignity
         cooldown: 40
@@ -38,6 +40,7 @@ jobs:
         description: At the end of the duration, heals target for 400 potency
   - name: Paladin
     role: Tank
+    code: PLD
     actions:
       - name: Divine Veil
         cooldown: 120
@@ -45,6 +48,7 @@ jobs:
         description: Reduces damage taken by 15% for 15 seconds
   - name: Dark Knight
     role: Tank
+    code: DRK
     actions:
       - name: Dark Missionary
         cooldown: 120
