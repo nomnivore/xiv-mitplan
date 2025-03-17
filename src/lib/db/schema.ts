@@ -58,7 +58,9 @@ export const mitplanTable = sqliteTable("mitplans", {
         actions: string[];
       }[];
     }[]
-  >("mechanics").notNull().default([]), // TODO: better types
+  >("mechanics")
+    .notNull()
+    .default([]), // TODO: better types
 
   createdAt: int("created_at", { mode: "timestamp" })
     .notNull()

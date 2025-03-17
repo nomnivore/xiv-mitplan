@@ -13,7 +13,6 @@
 # duration: int?
 # replace: str?
 
-
 jobs:
   - name: White Mage
     role: Healer
@@ -56,7 +55,6 @@ jobs:
         description: Reduces damage taken by 15% for 15 seconds
         replace: Party Mit
 
-
 roles:
   - name: Healer
     code: HLR
@@ -87,14 +85,14 @@ roles:
   - name: Melee
     code: MLE
     transient: true
-    actions: 
+    actions:
       - name: Feint
         cooldown: 90
         description: Reduces target physical damage dealt by 10% and magic damage dealt by 5%
   - name: Caster
     code: CST
     transient: true
-    actions: 
+    actions:
       - name: Addle
         cooldown: 90
         description: Reduces target magic damage dealt by 10% and physical damage dealt by 5%

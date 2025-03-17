@@ -34,7 +34,10 @@ export default function PlanTable({ plan, jobData }: PlanTableProps) {
   const [mechanics, setMechanics] = useState(plan.mechanics);
   const [roles, setRoles] = useState(plan.roles);
 
-  const handleAddRole = (role: {name: string, code: string}, dupeSuffix = 0) => {
+  const handleAddRole = (
+    role: { name: string; code: string },
+    dupeSuffix = 0,
+  ) => {
     // TODO: handle duplicates
     const key = role.name + (dupeSuffix > 0 ? ` ${dupeSuffix}` : "");
     if (roles[key]) {
@@ -55,14 +58,17 @@ export default function PlanTable({ plan, jobData }: PlanTableProps) {
             <TableHead key={key} className="text-center align-middle">
               <div className="flex min-w-fit flex-col py-4 text-nowrap">
                 <span className="font-bold">{displayName}</span>
-                <span className="text-xs text-muted-foreground">{code}</span>
+                <span className="text-muted-foreground text-xs">{code}</span>
               </div>
             </TableHead>
           ))}
           <TableHead>
             <AddRolePopover
               onSelectRole={handleAddRole}
-              roles={jobData.selectableRoles.map(({ name, code }) => ({ name, code }))}
+              roles={jobData.selectableRoles.map(({ name, code }) => ({
+                name,
+                code,
+              }))}
             />
           </TableHead>
         </TableRow>

@@ -9,13 +9,13 @@ import { Label } from "./label";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps } from "./button";
 
-export const { fieldContext, formContext, useFieldContext, useFormContext } = createFormHookContexts();
+export const { fieldContext, formContext, useFieldContext, useFormContext } =
+  createFormHookContexts();
 
 const FormLabel = React.forwardRef<
   React.ComponentRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({className, ...props }, ref) => {
-
+>(({ className, ...props }, ref) => {
   const field = useFieldContext();
   const hasError = field.state.meta.errors.length > 0;
   return (
@@ -25,12 +25,14 @@ const FormLabel = React.forwardRef<
       className={cn(hasError && "text-destructive", className)}
       {...props}
     />
-  )
-})
+  );
+});
 FormLabel.displayName = "FormLabel";
 
-const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>
-(({className, ...props }, ref) => {
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
   const field = useFieldContext();
   const errors = field.state.meta.errors;
 
@@ -40,26 +42,28 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
     <p
       ref={ref}
       key={index}
-      className={cn("text-sm font-medium text-destructive", className)}
+      className={cn("text-destructive text-sm font-medium", className)}
       {...props}
     >
       {error.message}
     </p>
-  ))
-})
+  ));
+});
 FormMessage.displayName = "FormMessage";
 
-const FormDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>
-(({className, ...props }, ref) => {
+const FormDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
   const field = useFieldContext();
   return (
     <p
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
-  )
-})
+  );
+});
 FormDescription.displayName = "FormDescription";
 
 // extends ./ui/button
@@ -68,18 +72,13 @@ const FormSubmitButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const form = useFormContext();
     return (
       <form.Subscribe selector={(state) => state.isSubmitting}>
-        {isSubmitting => (
-          <Button
-            ref={ref}
-            type="submit"
-            {...props}
-            disabled={isSubmitting}
-          />
+        {(isSubmitting) => (
+          <Button ref={ref} type="submit" {...props} disabled={isSubmitting} />
         )}
       </form.Subscribe>
-    )
-  }
-)
+    );
+  },
+);
 FormSubmitButton.displayName = "FormSubmitButton";
 
 export const { useAppForm } = createFormHook({
