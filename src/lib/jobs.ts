@@ -14,9 +14,12 @@ const ActionSchema = z.object({
   replace: z.string().optional()
 });
 
+// TODO: collapse roles into jobs
+
 // Define the Role schema
 const RoleSchema = z.object({
   name: z.string(),
+  code: z.string(),
   transient: z.boolean(),
   actions: z.array(ActionSchema).optional()
 });
@@ -25,6 +28,7 @@ const RoleSchema = z.object({
 const JobSchema = z.object({
   name: z.string(),
   role: z.string(),
+  code: z.string(),
   actions: z.array(ActionSchema)
 });
 

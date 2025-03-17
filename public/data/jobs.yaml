@@ -58,9 +58,11 @@ jobs:
 
 
 roles:
-  - name: healer
+  - name: Healer
+    code: HLR
     transient: false # means this role is not meant to be used directly, has no actions
   - name: Tank
+    code: TNK
     transient: true # this role can be used directly, has (replacable) actions
     actions:
       - name: Party Mit
@@ -83,12 +85,14 @@ roles:
         duration: 15
         description: Reduces target damage dealt by 15%
   - name: Melee
+    code: MLE
     transient: true
     actions: 
       - name: Feint
         cooldown: 90
         description: Reduces target physical damage dealt by 10% and magic damage dealt by 5%
   - name: Caster
+    code: CST
     transient: true
     actions: 
       - name: Addle

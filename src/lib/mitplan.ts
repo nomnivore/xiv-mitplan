@@ -1,4 +1,5 @@
 "use server";
+import { eq } from "drizzle-orm";
 import { db } from "./db";
 import { MitplanInsert, mitplanTable } from "./db/schema";
 import { slug } from "./utils";
@@ -38,4 +39,15 @@ export async function createMitplan(data: {userId: number, name: string, descrip
     }
     throw error;
   }
+}
+
+// returns all mitplans for a user
+export async function getMitplansByUserId(userId: number) {
+  return await db.select().from(mitplanTable).where(eq(mitplanTable.userId, userId));
+}
+
+// returns a mitplan by id
+export async function getMitplanById(id: string) {
+  const result = await db.select().from(mitplanTable).where(eq(mitplanTable.id, id)).limit(1);
+  return result[0] ?? null;
 }

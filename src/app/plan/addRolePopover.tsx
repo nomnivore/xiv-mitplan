@@ -16,8 +16,8 @@ import { PlusIcon } from "lucide-react";
 import * as React from "react";
 
 interface AddRolePopoverProps extends ButtonProps {
-  onSelectRole: (role: string) => void;
-  roles: string[];
+  onSelectRole: (role: {name: string, code: string}) => void;
+  roles: {name: string, code: string}[];
 }
 
 export const AddRolePopover = React.forwardRef<
@@ -28,7 +28,7 @@ export const AddRolePopover = React.forwardRef<
   const [open, setOpen] = React.useState(false);
   const handleAddButton = () => {
     if (selectedRole) {
-      onSelectRole(selectedRole);
+      onSelectRole(roles.find((role) => role.code === selectedRole)!);
       setSelectedRole(undefined);
     }
 
@@ -57,8 +57,8 @@ export const AddRolePopover = React.forwardRef<
           </SelectTrigger>
           <SelectContent>
             {roles.map((role, key) => (
-              <SelectItem key={key} value={role}>
-                {role}
+              <SelectItem key={key} value={role.code}>
+                {role.name}
               </SelectItem>
             ))}
           </SelectContent>

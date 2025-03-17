@@ -52,6 +52,7 @@ export const mitplanTable = sqliteTable("mitplans", {
   mechanics: json<
     {
       name: string;
+      timestamp?: number;
       mits: {
         role: string;
         actions: string[];
