@@ -44,5 +44,7 @@ const yamlContent = fs.readFileSync(filePath, 'utf-8');
 const data = yaml.load(yamlContent);
 
 // Validate the data
-const jobData = JobsSchema.parse(data);
-export { jobData };
+const parsedData = JobsSchema.parse(data);
+const selectableRoles: Array<z.infer<typeof RoleSchema> | z.infer<typeof JobSchema>> = [...parsedData.roles.filter((role) => role.transient), ...parsedData.jobs];
+const jobData = { selectableRoles, ...parsedData };
+export { jobData }

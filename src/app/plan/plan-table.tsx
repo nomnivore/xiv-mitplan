@@ -33,7 +33,6 @@ function createMechanic(name: string): Mechanic {
 export default function PlanTable({ plan, jobData }: PlanTableProps) {
   const [mechanics, setMechanics] = useState(plan.mechanics);
   const [roles, setRoles] = useState(plan.roles);
-  console.log(roles)
 
   const handleAddRole = (role: {name: string, code: string}, dupeSuffix = 0) => {
     // TODO: handle duplicates
@@ -63,7 +62,7 @@ export default function PlanTable({ plan, jobData }: PlanTableProps) {
           <TableHead>
             <AddRolePopover
               onSelectRole={handleAddRole}
-              roles={jobData.jobs.map(({ name, code }) => ({ name, code }))}
+              roles={jobData.selectableRoles.map(({ name, code }) => ({ name, code }))}
             />
           </TableHead>
         </TableRow>
