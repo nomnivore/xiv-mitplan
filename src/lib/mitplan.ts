@@ -2,7 +2,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "./db";
 import { MitplanInsert, mitplanTable } from "./db/schema";
-import { slug } from "./utils";
+import { slug, tryCatch } from "./utils";
 
 // tries to insert a mitplan with a unique slug
 // slugs have a very low chance of collision
@@ -19,21 +19,19 @@ async function tryInsertMitplanWithId(
   const id = slug(8);
   const mitplanWithId = { ...mitplan, id };
 
-  try {
-    const result = await db
-      .insert(mitplanTable)
-      .values(mitplanWithId)
-      .returning();
-    return result[0];
-  } catch (error) {
+  const [result, err] = await tryCatch(
+    db.insert(mitplanTable).values(mitplanWithId).returning(),
+  );
+  if (err) {
     if (
-      error instanceof Error &&
-      error.message.includes("UNIQUE constraint failed")
+      err instanceof Error &&
+      err.message.includes("UNIQUE constraint failed")
     ) {
       return tryInsertMitplanWithId(mitplan, attempt + 1);
     }
-    throw error;
+    throw err;
   }
+  return result[0];
 }
 
 // creates a new mitplan
@@ -44,15 +42,12 @@ export async function createMitplan(data: {
   description: string;
   fightId: string;
 }) {
-  try {
-    return (await tryInsertMitplanWithId(data)).id;
-  } catch (error) {
-    if (error instanceof Error) {
-      console.log(error.message);
-      return null;
-    }
-    throw error;
+  const [result, err] = await tryCatch(tryInsertMitplanWithId(data));
+  if (err) {
+    console.log(err.message);
+    return null;
   }
+  return result.id;
 }
 
 // returns all mitplans for a user

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
+import { tryCatchSync } from "./lib/utils";
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   // extend session cookie expirations
@@ -30,10 +31,9 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
       status: 403,
     });
   }
-  let origin: URL;
-  try {
-    origin = new URL(originHeader);
-  } catch {
+
+  const [origin, err] = tryCatchSync(() => new URL(originHeader));
+  if (err) {
     return new NextResponse(null, {
       status: 403,
     });
