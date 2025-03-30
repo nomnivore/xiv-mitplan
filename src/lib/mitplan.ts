@@ -4,9 +4,16 @@ import { db } from "./db";
 import { MitplanInsert, mitplanTable } from "./db/schema";
 import { slug, tryCatch } from "./utils";
 
-// tries to insert a mitplan with a unique slug
-// slugs have a very low chance of collision
-// returns the new mitplan if successful
+// this file contains useful server functions for interacting with mitplans and the database
+
+/**
+ * Tries to insert a mitplan with a unique slug
+ * Slugs have a very low chance of collision
+ * Returns the new mitplan if successful
+ * @throws {Error} if the mitplan could not be inserted
+ * @param mitplan The mitplan to insert
+ * @param attempt The attempt number
+ */
 async function tryInsertMitplanWithId(
   mitplan: Omit<MitplanInsert, "id">,
   attempt = 0,
@@ -50,7 +57,10 @@ export async function createMitplan(data: {
   return result.id;
 }
 
-// returns all mitplans for a user
+/**
+ * Returns all mitplans for a user
+ * @param userId The id of the user to get mitplans for
+ */
 export async function getMitplansByUserId(userId: number) {
   return await db
     .select()
@@ -58,7 +68,11 @@ export async function getMitplansByUserId(userId: number) {
     .where(eq(mitplanTable.userId, userId));
 }
 
-// returns a mitplan by id
+/**
+ * Returns a mitplan by id
+ * Returns null if the mitplan does not exist
+ * @param id The id of the mitplan to get
+ */
 export async function getMitplanById(id: string) {
   const result = await db
     .select()
@@ -67,3 +81,21 @@ export async function getMitplanById(id: string) {
     .limit(1);
   return result[0] ?? null;
 }
+
+/**
+ * Updates a mitplan by id
+ * Returns the updated mitplan if successful
+ * Returns null if the mitplan does not exist
+ * @param id The id of the mitplan to update
+ * @param data The data to update the mitplan with
+ */
+export async function updateMitplanById(id: string, data: Partial<MitplanInsert>) {
+  const [result, err] = await tryCatch(
+    db.update(mitplanTable).set(data).where(eq(mitplanTable.id, id)).returning()
+  );
+  if (err) {
+    console.log(err.message);
+    return null;
+  }
+  return result[0] ?? null;
+}  
